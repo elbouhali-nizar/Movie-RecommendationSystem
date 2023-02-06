@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="card-wrapper">
+
+    <div class="card">
+
+      <h1 class="center">Dashboard</h1>
+      <p class="center">You are currently logged in.</p>
+
+      <div class="center">
+        <a href="/user/signout" class="btn btn--secondary">Sign Out</a>
+      </div>
+    
+    </div>
+
+    <div class="card">
+
+      <h2 class="center">Your Info</h2>
+
+      <p>
+        <strong>ID:</strong> {{ session['user']['_id'] }}<br>
+        <strong>Name:</strong> {{ session['user']['name'] }}<br>
+        <strong>Email:</strong> {{ session['user']['email'] }}<br>
+        <br>
+        <strong>Movies you watched:</strong> {{ session['user']['movie'] }}
+      </p>
+    
+    </div>
+
+    <div class="card">
+        {% for b,i in movie20.items(): %}
+            <h2> {{b}} </h2>
+            {% for x, y in i.items(): %}
+                <button onclick="getId(this.id)" class="btn" id={{x}}> {{y}} </button>
+            {% endfor %}
+        {% endfor %}
+      
+    
+    </div>
+  
+    
+  </div>
+  
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+  <script>
+    function getId(clicked_id)
+    {
+      const movie_id =clicked_id ;
+      
+      const dict_values = {movie_id} 
+      const s = JSON.stringify(dict_values); 
+      console.log(s);
+      $.ajax({
+          url:"/MovieInfo/details/",
+          type:"POST",
+          contentType: "application/json",
+          data: JSON.stringify(s),
+          success: function(resp) {
+            window.location.href = "/MovieDetails/";
+          }
+          
+        });
+      
+     
+    }
+  </script>
+ 
+  
+{% endblock %}

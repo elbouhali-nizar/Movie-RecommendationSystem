@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="card-wrapper">
+
+    <div class="card">
+
+      <h1 class="center">Details</h1>
+        
+        
+      
+  
+        <p>
+          <strong>ID:</strong> {{ session['mov']['id'] }}<br>
+          <strong>release date:</strong> {{ session['mov']['release_date'] }}
+          <br>
+          <strong>title:</strong> {{ session['mov']['title'] }}<br>
+          <strong>overview:</strong> {{ session['mov']['overview'] }}<br>
+          <strong>director:</strong> {{ session['mov']['director'] }}<br>
+          <strong>cast:</strong> {{ session['mov']['cast'] }}<br>
+          <br>
+          <br>
+          <strong>genres:</strong> {{ session['mov']['genres'] }}<br>
+          <strong>homepage:</strong> <a href={{ session['mov']['homepage'] }}> {{ session['mov']['homepage'] }} </a><br>
+          <br>
+          <br>
+          <br>
+          <a class='btn btn--secondary'href="/dashboard/">Dashboard</a> 
+        </p>
+      
+      
+        
+      
+      
+    </div>
+    <div class="card">
+
+      <h1 class="center">Similar Movies</h1>
+        
+        
+      
+  
+        <p>
+          {% for x, y in session['mov']['similarFilms'].items(): %}
+          <button class="btn button" id={{x}} onclick="getId(this.id)">{{y}}</button>
+          {% endfor %}
+        </p>
+      
+      
+        
+      
+      
+    </div>
+
+   
+  
+  </div>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+  <script>
+    function getId(clicked_id)
+    {
+      const movie_id =clicked_id ;
+      
+      const dict_values = {movie_id} //Pass the javascript variables to a dictionary.
+      const s = JSON.stringify(dict_values); // Stringify converts a JavaScript object or value to a JSON string
+      console.log(s); // Prints the variables to console window, which are in the JSON format
+      $.ajax({
+          url:"/MovieInfo/details/",
+          type:"POST",
+          contentType: "application/json",
+          data: JSON.stringify(s),
+          success: function(resp) {
+            window.location.href = "/MovieDetails/";
+          }
+          
+        });
+      
+     
+    }
+  </script>
+{% endblock %}
